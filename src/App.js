@@ -1,8 +1,10 @@
 import "./App.css";
 import { Button } from "antd";
 
+import PrivateLayout from "./layouts/PrivateLayout";
+
 function App() {
-  return <Button type="primary">Teste</Button>;
+  return <PrivateLayout />;
 }
 
 export default App;
