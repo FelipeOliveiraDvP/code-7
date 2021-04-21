@@ -1,9 +1,10 @@
 import { Layout, Menu } from "antd";
 import {
-  UploadOutlined,
+  HomeOutlined,
   UserOutlined,
-  VideoCameraOutlined,
+  DollarCircleOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 import "./style.css";
 
@@ -12,29 +13,17 @@ const { Header, Content, Footer, Sider } = Layout;
 function PrivateLayout({ children }) {
   return (
     <Layout className="main-layout">
-      <Sider
-        breakpoint="lg"
-        collapsedWidth="0"
-        onBreakpoint={(broken) => {
-          console.log(broken);
-        }}
-        onCollapse={(collapsed, type) => {
-          console.log(collapsed, type);
-        }}
-      >
+      <Sider breakpoint="lg" collapsedWidth="0">
         <div className="logo" />
         <Menu theme="dark" mode="inline" defaultSelectedKeys={["4"]}>
-          <Menu.Item key="1" icon={<UserOutlined />}>
-            nav 1
+          <Menu.Item key="1" icon={<HomeOutlined />}>
+            <Link to="/">Home</Link>
           </Menu.Item>
-          <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-            nav 2
+          <Menu.Item key="2" icon={<DollarCircleOutlined />}>
+            <Link to="/dividas">Dívidas</Link>
           </Menu.Item>
-          <Menu.Item key="3" icon={<UploadOutlined />}>
-            nav 3
-          </Menu.Item>
-          <Menu.Item key="4" icon={<UserOutlined />}>
-            nav 4
+          <Menu.Item key="3" icon={<UserOutlined />}>
+            <Link to="/users">Usuários</Link>
           </Menu.Item>
         </Menu>
       </Sider>
@@ -48,11 +37,11 @@ function PrivateLayout({ children }) {
             className="site-layout-background"
             style={{ padding: 24, minHeight: 360 }}
           >
-            content
+            {children}
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
-          Ant Design ©2018 Created by Ant UED
+          Code 7 ©2021 Criado por Felipe de Oliveira
         </Footer>
       </Layout>
     </Layout>
