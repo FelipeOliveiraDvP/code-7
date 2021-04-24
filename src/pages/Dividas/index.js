@@ -1,8 +1,12 @@
-import { notification } from "antd";
 import React, { useEffect, useState } from "react";
+import { Button, notification, Space } from "antd";
+import { PlusOutlined } from "@ant-design/icons";
 
 import List from "../../components/Dividas/List";
+import Modal from "../../components/Dividas/Modal";
 import { getDividas } from "../../services/dividas";
+
+import { PageHeader } from "./styleds";
 
 function Dividas() {
   const [dividas, setDividas] = useState([]);
@@ -17,7 +21,7 @@ function Dividas() {
         const { result } = data;
         setDividas(result);
       })
-      .catch(({ response }) => {
+      .catch(() => {
         notification.error({
           description: "Erro ao listar as dívidas",
         });
@@ -26,27 +30,47 @@ function Dividas() {
   };
 
   const handleEdit = (id) => {
-    console.log(id);
+    setDivida(id);
+    setVisible(true);
   };
 
   const handleDelete = (id) => {
     console.log(id);
   };
 
+  const toggleModal = () => {
+    setVisible(!visible);
+  };
+
   useEffect(() => {
     fetch();
-  }, [divida]);
+  }, []);
 
   return (
-    <>
-      <h2>Dívidas</h2>
+    <div>
+      <PageHeader>
+        <h2>Dívidas</h2>
+        <Space>
+          <Button type="primary" icon={<PlusOutlined />} onClick={toggleModal}>
+            Nova divida
+          </Button>
+        </Space>
+      </PageHeader>
       <List
         dividas={dividas}
         loading={loading}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
-    </>
+      <Modal
+        visible={visible}
+        divida={divida}
+        onCancel={() => {
+          setDivida(null);
+          toggleModal();
+        }}
+      ></Modal>
+    </div>
   );
 }
 
