@@ -1,21 +1,28 @@
-import instance from "./index";
+import axios from "axios";
+
+const BASE_URL = "https://provadev.xlab.digital/api/v1/divida/";
+const UUID = "5ae46916-932e-4217-9e9d-f09e56e112ff";
+
+const params = {
+  uuid: UUID,
+};
 
 export function getDividas() {
-  return instance.get(BASE_URL + "divida");
+  return axios.get(`${BASE_URL}`, { params: params });
 }
 
 export function getDivida(id) {
-  return instance.get(BASE_URL + "divida/" + id);
+  return axios.get(`${BASE_URL}${id}`, { params: params });
 }
 
 export function createDivida(divida = {}) {
-  return instance.post(BASE_URL + "divida", divida);
+  return axios.post(`${BASE_URL}`, divida, { params: params });
 }
 
 export function updateDivida(id, divida = {}) {
-  return instance.put(BASE_URL + "divida/" + id, divida);
+  return axios.put(`${BASE_URL}${id}`, divida, { params: params });
 }
 
 export function deleteDivida(id) {
-  return instance.delete(BASE_URL + "divida/" + id);
+  return axios.delete(`${BASE_URL}${id}`, { params: params });
 }
