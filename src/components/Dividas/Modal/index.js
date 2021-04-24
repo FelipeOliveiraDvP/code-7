@@ -14,6 +14,7 @@ function DividaModal({ divida, visible, onCancel, onSubmit }) {
 
   useEffect(() => {
     const fetchUsers = () => {
+      setLoading(true);
       getUsers()
         .then(({ data }) => {
           setUsers(data);
@@ -23,6 +24,7 @@ function DividaModal({ divida, visible, onCancel, onSubmit }) {
     };
 
     const fetchDivida = () => {
+      setLoading(true);
       getDivida(divida)
         .then(({ data }) => {
           const { result } = data;
@@ -41,8 +43,6 @@ function DividaModal({ divida, visible, onCancel, onSubmit }) {
     fetchUsers();
     fetchDivida();
   }, [visible, divida]);
-
-  if (loading) return <Skeleton />;
 
   return (
     <Modal
@@ -65,35 +65,39 @@ function DividaModal({ divida, visible, onCancel, onSubmit }) {
         onCancel();
       }}
     >
-      <Form layout="vertical" form={form}>
-        <Item
-          name="idUsuario"
-          label="Cliente"
-          rules={[{ required: true, message: "Informe um cliente" }]}
-        >
-          <Select placeholder="Usuário do JSON Placeholder">
-            {users.map((user) => (
-              <Option key={user.id} value={user.id}>
-                {user.name}
-              </Option>
-            ))}
-          </Select>
-        </Item>
-        <Item
-          name="motivo"
-          label="Motivo"
-          rules={[{ required: true, message: "Informe um motivo" }]}
-        >
-          <Input placeholder="Ex: dívida de crédito" />
-        </Item>
-        <Item
-          name="valor"
-          label="Valor"
-          rules={[{ required: true, message: "Informe o valor da dívida" }]}
-        >
-          <Input type="number" placeholder="Ex: R$ 500,00" />
-        </Item>
-      </Form>
+      {loading ? (
+        <Skeleton />
+      ) : (
+        <Form layout="vertical" form={form}>
+          <Item
+            name="idUsuario"
+            label="Cliente"
+            rules={[{ required: true, message: "Informe um cliente" }]}
+          >
+            <Select placeholder="Usuário do JSON Placeholder">
+              {users.map((user) => (
+                <Option key={user.id} value={user.id}>
+                  {user.name}
+                </Option>
+              ))}
+            </Select>
+          </Item>
+          <Item
+            name="motivo"
+            label="Motivo"
+            rules={[{ required: true, message: "Informe um motivo" }]}
+          >
+            <Input placeholder="Ex: dívida de crédito" />
+          </Item>
+          <Item
+            name="valor"
+            label="Valor"
+            rules={[{ required: true, message: "Informe o valor da dívida" }]}
+          >
+            <Input type="number" placeholder="Ex: R$ 500,00" />
+          </Item>
+        </Form>
+      )}
     </Modal>
   );
 }

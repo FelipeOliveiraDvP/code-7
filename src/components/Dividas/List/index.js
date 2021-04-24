@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Space, Table } from "antd";
+import { Button, Popconfirm, Space, Table } from "antd";
 import moment from "moment";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 
@@ -37,14 +37,17 @@ function List({ dividas, loading, onEdit, onDelete }) {
           >
             Editar
           </Button>
-          <Button
-            type="primary"
-            icon={<DeleteOutlined />}
-            danger
-            onClick={() => onDelete(record._id)}
+          <Popconfirm
+            title="Deseja realmente excluir essa dívida"
+            onConfirm={() => onDelete(record._id)}
+            okText="Excluir"
+            cancelText="Cancelar"
+            okType="danger"
           >
-            Excluir
-          </Button>
+            <Button type="primary" icon={<DeleteOutlined />} danger>
+              Excluir
+            </Button>
+          </Popconfirm>
         </Space>
       ),
     },
