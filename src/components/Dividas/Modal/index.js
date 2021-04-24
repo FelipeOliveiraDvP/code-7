@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Select, Skeleton, Input } from "antd";
 
 import { getUsers } from "../../../services/users";
+import { getDivida } from "../../../services/dividas";
 
 const { useForm, Item } = Form;
 const { Option } = Select;
 
-function DividaModal({ divida, visible, onCancel }) {
+function DividaModal({ divida, visible, onCancel, onSubmit }) {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [form] = useForm();
@@ -20,8 +21,26 @@ function DividaModal({ divida, visible, onCancel }) {
         .catch(() => {})
         .finally(() => setLoading(false));
     };
+
+    const fetchDivida = () => {
+      getDivida(divida)
+        .then(({ data }) => {
+          const { result } = data;
+          if (result) {
+            form.setFieldsValue({
+              idUsuario: result.idUsuario,
+              motivo: result.motivo,
+              valor: result.valor,
+            });
+          }
+        })
+        .catch(() => {})
+        .finally(() => setLoading(false));
+    };
+
     fetchUsers();
-  }, [visible]);
+    fetchDivida();
+  }, [visible, divida]);
 
   if (loading) return <Skeleton />;
 
@@ -29,6 +48,18 @@ function DividaModal({ divida, visible, onCancel }) {
     <Modal
       title={divida ? "Editar dívida" : "Nova dívida"}
       visible={visible}
+      okText="Salvar"
+      cancelText="Cancelar"
+      onOk={() => {
+        form
+          .validateFields()
+          .then((values) => {
+            form.resetFields();
+            onCancel();
+            onSubmit(values);
+          })
+          .catch((error) => {});
+      }}
       onCancel={() => {
         form.resetFields();
         onCancel();

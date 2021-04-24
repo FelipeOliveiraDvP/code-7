@@ -38,6 +38,10 @@ function Dividas() {
     console.log(id);
   };
 
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+
   const toggleModal = () => {
     setVisible(!visible);
   };
@@ -69,6 +73,7 @@ function Dividas() {
           setDivida(null);
           toggleModal();
         }}
+        onSubmit={handleSubmit}
       ></Modal>
     </div>
   );
