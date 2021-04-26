@@ -4,7 +4,12 @@ import { PlusOutlined } from "@ant-design/icons";
 
 import List from "../../components/Dividas/List";
 import Modal from "../../components/Dividas/Modal";
-import { getDividas } from "../../services/dividas";
+import {
+  getDividas,
+  createDivida,
+  updateDivida,
+  deleteDivida,
+} from "../../services/dividas";
 
 import { PageHeader } from "./styleds";
 
@@ -35,11 +40,39 @@ function Dividas() {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
+    deleteDivida(id)
+      .then(() => {
+        fetch();
+      })
+      .catch(() => {
+        notification.error({
+          description: "Erro ao excluir a dívida",
+        });
+      });
   };
 
   const handleSubmit = (values) => {
-    console.log(values);
+    if (divida) {
+      updateDivida(divida, values)
+        .then(() => {
+          fetch();
+        })
+        .catch(() => {
+          notification.error({
+            description: "Erro ao editar a dívida",
+          });
+        });
+    } else {
+      createDivida(values)
+        .then(() => {
+          fetch();
+        })
+        .catch(() => {
+          notification.error({
+            description: "Erro ao criar a dívida",
+          });
+        });
+    }
   };
 
   const toggleModal = () => {
